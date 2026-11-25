@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Easy Laptop power manager
+Comment=Easy laptop powermanager
+Exec=/usr/sbin/vpower
+Icon=battery
+Terminal=false
+Type=Application
+Categories=X-System-power;System;
