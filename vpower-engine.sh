@@ -229,7 +229,8 @@ apply_cpu() {
       [ -d "$pol" ] || continue
       avail=" $(cat "$pol/scaling_available_governors" 2>/dev/null) "
       gov=""
-      for g in $pref; do case "$avail" in *" $g "*) gov=$g; break ;; esac; done
+      if [ -n "$GOVERNOR" ]; then case "$avail" in *" $GOVERNOR "*) gov=$GOVERNOR ;; esac; fi
+      [ -z "$gov" ] && for g in $pref; do case "$avail" in *" $g "*) gov=$g; break ;; esac; done
       [ -n "$gov" ] && set_val "$pol/scaling_governor" "$gov" && n=$((n+1))
     done
     if [ "$n" -gt 0 ]; then ok "Governor: $gov ($n CPU groups)"; else skip "No CPU frequency scaling available"; fi

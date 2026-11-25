@@ -218,6 +218,14 @@ static gchar **build_env(void)
     e = env_seti(e, "KEEP_CORES", cores >= A.ncpu ? 0 : cores);
     e = env_seti(e, "MAX_FREQ_PERCENT", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(A.sp_freq)));
     e = env_seti(e, "BRIGHTNESS_PERCENT", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(A.sp_bright)));
+    {   /* keep the governor the user chose with "Set governor" */
+        gchar *g = NULL;
+        if (g_file_get_contents("/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor", &g, NULL, NULL)) {
+            g_strstrip(g);
+            if (*g) e = env_set(e, "GOVERNOR", g);
+        }
+        g_free(g);
+    }
     e = env_set(e, "RUN_POWERTOP",
                 gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(A.ck_powertop)) ? "1" : "0");
 
@@ -403,7 +411,7 @@ static void on_set_governor(GtkButton *b, gpointer unused)
                 : g_strdup("Could not set ondemand up_threshold.\n");
         log_append(msg); g_free(msg);
     }
-    log_append("Note: Restore normal and the power modes may change the governor again.\n");
+    log_append("Apply keeps this governor. Restore normal may change it.\n");
     g_free(g);
     cpufreq_refresh();
 }
