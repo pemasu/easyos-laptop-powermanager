@@ -1,4 +1,4 @@
-Easy Laptop power manager 0.1 — battery power modes for EasyOS (X11, GTK2)
+Easy Laptop power manager — battery power modes for EasyOS (X11, GTK2)
 ====================================================
 
 Modes
