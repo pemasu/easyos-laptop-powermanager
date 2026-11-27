@@ -1,5 +1,5 @@
 /*
- * Easy Laptop power manager 0.1 — power modes for EasyOS (X11 / GTK2)
+ * Easy Laptop power manager 0.2 — power modes for EasyOS (X11 / GTK2)
  * Extreme Flight Mode and Power Save Mode, built on an embedded bash engine.
  * Runs as root (EasyOS default). Build: make
  */
@@ -473,15 +473,15 @@ static GtkWidget *build_cpufreq_frame(void)
 int main(int argc, char **argv)
 {
     gtk_init(&argc, &argv);
-    g_set_application_name("Easy Laptop power manager 0.1");
+    g_set_application_name("Easy Laptop power manager 0.2");
     A.ncpu = (int)sysconf(_SC_NPROCESSORS_CONF);
     if (A.ncpu < 1) A.ncpu = 1;
 
     if (!write_engine()) return 1;
 
     A.win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(A.win), "Easy Laptop power manager 0.1");
-    gtk_window_set_wmclass(GTK_WINDOW(A.win), "Easy Laptop power manager 0.1", "Easy Laptop power manager 0.1");
+    gtk_window_set_title(GTK_WINDOW(A.win), "Easy Laptop power manager 0.2");
+    gtk_window_set_wmclass(GTK_WINDOW(A.win), "Easy Laptop power manager 0.2", "Easy Laptop power manager 0.2");
     gtk_window_set_default_size(GTK_WINDOW(A.win), 680, 760);
     gtk_window_set_icon_name(GTK_WINDOW(A.win), "battery");
     gtk_container_set_border_width(GTK_CONTAINER(A.win), 10);
