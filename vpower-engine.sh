@@ -225,6 +225,7 @@ apply_cpu() {
       *) pref="conservative schedutil powersave" ;;
     esac
     n=0
+    for m in cpufreq_powersave cpufreq_ondemand cpufreq_performance cpufreq_conservative; do modprobe -q $m 2>/dev/null; done
     for pol in /sys/devices/system/cpu/cpufreq/policy*; do
       [ -d "$pol" ] || continue
       avail=" $(cat "$pol/scaling_available_governors" 2>/dev/null) "

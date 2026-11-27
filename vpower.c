@@ -324,8 +324,25 @@ static const int up_vals[] = { 95, 80, 50, 30 };
 static GtkWidget *g_lbl_drv, *g_cb_gov, *g_cb_up, *g_up_row, *g_btn_gov;
 static gchar **g_govs;
 
+/* acpi-cpufreq on modular kernels lists only governors whose module is loaded
+   (e.g. after wcpufreq restored "ondemand" at boot, powersave may be missing). */
+static void cpufreq_load_governors(void)
+{
+    static gboolean done = FALSE;
+    if (done || geteuid() != 0) return;
+    done = TRUE;
+    static const char *mods[] = { "cpufreq_powersave", "cpufreq_ondemand",
+        "cpufreq_performance", "cpufreq_conservative", "cpufreq_userspace", NULL };
+    for (int i = 0; mods[i]; i++) {
+        gchar *cmd = g_strdup_printf("modprobe -q %s >/dev/null 2>&1", mods[i]);
+        if (system(cmd) == -1) { /* ignore */ }
+        g_free(cmd);
+    }
+}
+
 static void cpufreq_refresh(void)
 {
+    cpufreq_load_governors();
     gchar *drv = read_sys(CPUFREQ0 "scaling_driver");
     gchar *gov = read_sys(CPUFREQ0 "scaling_governor");
     gchar *avail = read_sys(CPUFREQ0 "scaling_available_governors");
